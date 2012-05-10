@@ -1,9 +1,6 @@
 (ns code-retreat-0.core
   (:use midje.sweet))
 
-(fact
-  (+ 1 1) => 2)
-
 ;; [[0 1 0]
 ;;  [0 0 0]
 ;;  [0 0 0]]
@@ -12,7 +9,7 @@
   [u y x]
   (map #(get-in u %)
        (filter #(not= % [y x])
-        (for [b [-1 0 1]
+               (for [b [-1 0 1]
                      a [-1 0 1]]
                  [(+ b y) (+ a x)]))))
 
