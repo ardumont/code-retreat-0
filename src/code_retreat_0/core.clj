@@ -100,18 +100,21 @@
         offset 29]
     (doseq [x (range (count u))
             y (range (count u))]
-      ;; clear the painting
-      (.setColor gfx blank-color)
-      (.fillRect gfx
-                 (* 10 x)
-                 (+ offset (* 10 y))
-                 10 10)
-      ;; draw the new state
-      (.setColor gfx (color (get-in u [y x])))
-      (.fillRect gfx
-                 (* 10 x)
-                 (+ offset (* 10 y))
-                 10 10))))
+      (let [state (get-in u [y x])]
+        ;; clear the painting
+        (.setColor gfx blank-color)
+        (.fillRect gfx
+                   (* 10 x)
+                   (+ offset (* 10 y))
+                   10 10)
+        ;; optimisation for display
+        (when (= 1 state)
+          ;; draw the new state if needed
+          (.setColor gfx (color state))
+          (.fillRect gfx
+                     (* 10 x)
+                     (+ offset (* 10 y))
+                     10 10))))))
 
 (defn game-of-life "Game of life"
   [n]
