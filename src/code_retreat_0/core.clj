@@ -50,7 +50,7 @@
                [0 0 0]
                [1 0 0]] 1 1) => 0)
 
-(defn gol ""
+(defn next-state "Given a universe, compute the next state of the universe"
   [u]
   (reduce
    (fn [r [y x :as c]]
@@ -60,10 +60,10 @@
          x (range (count u))] [y x])))
 
 (fact
-  (gol [[0 1 0 0]
-        [0 0 0 0]
-        [0 0 0 0]
-        [0 0 0 0]]) => [[0 0 0 0]
-                        [0 0 0 0]
-                        [0 0 0 0]
-                        [0 0 0 0]])
+  (next-state [[0 1 0 0]
+               [0 0 0 0]
+               [0 0 0 0]
+               [0 0 0 0]]) => [[0 0 0 0]
+                               [0 0 0 0]
+                               [0 0 0 0]
+                               [0 0 0 0]])
