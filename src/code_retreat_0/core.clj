@@ -1,17 +1,21 @@
 (ns code-retreat-0.core
   (:use midje.sweet))
 
-;; [[0 1 0]
-;;  [0 0 0]
-;;  [0 0 0]]
+(defn neighbours-coord
+  [y x]
+  (for [b [-1 0 1]
+        a [-1 0 1]
+        :let [y+ (+ b y)
+              x+ (+ a x)]
+        :when (not= [y+ x+] [y x])]
+    [y+ x+]))
+
+(fact
+  (neighbours-coord 1 1) => [[0 0] [0 1] [0 2] [1 0] [1 2] [2 0] [2 1] [2 2]])
 
 (defn nb "Compute the state of the neigbours of the cell with coord [y x]"
   [u y x]
-  (map #(get-in u %)
-       (filter #(not= % [y x])
-               (for [b [-1 0 1]
-                     a [-1 0 1]]
-                 [(+ b y) (+ a x)]))))
+  (map #(get-in u %) (neighbours-coord y x)))
 
 (fact
   (nb [[0 1 0]
