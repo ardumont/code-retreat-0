@@ -79,6 +79,8 @@
 
 ;; ------------------------ Side effects -------------------------
 
+(def *size-cell 10)
+
 (defn get-gfx "Given a width and a height, returns a frame with these dimension"
   [width height]
   (.getGraphics
@@ -104,24 +106,24 @@
         ;; clear the painting
         (.setColor gfx blank-color)
         (.fillRect gfx
-                   (* 10 x)
-                   (+ offset (* 10 y))
-                   10 10)
+                   (* *size-cell x)
+                   (+ offset (* *size-cell y))
+                   *size-cell *size-cell)
         ;; optimisation for display
         (when (= 1 state)
           ;; draw the new state if needed
           (.setColor gfx (color state))
           (.fillRect gfx
-                     (* 10 x)
-                     (+ offset (* 10 y))
-                     10 10))))))
+                     (* *size-cell x)
+                     (+ offset (* *size-cell y))
+                     *size-cell *size-cell))))))
 
 (defn game-of-life "Game of life"
   [n]
-  (let [w 300
-        h 300
+  (let [w (* *size-cell n)
+        h (* *size-cell n)
         gfx (get-gfx w h)]
     (iterate (fn [u] (let [nxt-universe (next-state u)]
                       (do (draw gfx w h nxt-universe)
-                          (Thread/sleep 200)
+                          (Thread/sleep 300)
                           nxt-universe))) (random-universe n))))
