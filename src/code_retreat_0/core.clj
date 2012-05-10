@@ -24,13 +24,18 @@
 (defn next-state
   [u y x]
   (let [nb-n (reduce + (nb u y x))]
-    (if (< nb-n 2) 0 1)))
+    (cond (< nb-n 2) 0
+          (<= 2 nb-n 3) 1
+          :else 0)))
 
-;.;. Intellectual 'work' is misnamed; it is a pleasure, a dissipation, and is its own highest reward. -- Twain
+;.;. It takes time to succeed because success is merely the natural reward of taking time to do anything well. -- Ross
 (fact "next time"
   (next-state [[0 1 0]
                [0 1 0]
                [0 0 0]] 1 1) => 0
   (next-state [[0 1 1]
                [0 1 0]
-               [0 0 0]] 1 1) => 1)
+               [0 0 0]] 1 1) => 1
+  (next-state [[1 1 1]
+               [0 1 0]
+               [1 0 0]] 1 1) => 0)
