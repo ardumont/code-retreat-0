@@ -14,19 +14,19 @@
   (neighbours-coord 0 0) => [[-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1]]
   (neighbours-coord 1 1) => [[0 0] [0 1] [0 2] [1 0] [1 2] [2 0] [2 1] [2 2]])
 
-(defn nb "Compute the state of the neigbours of the cell with coord [y x]"
+(defn neighbours-state "Compute the state of the neigbours of the cell with coord [y x]"
   [u y x]
   (map #(get-in u %) (neighbours-coord y x)))
 
 (fact
-  (nb [[0 1 0]
-       [0 0 0]
-       [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
+  (neighbours-state [[0 1 0]
+                     [0 0 0]
+                     [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
 
 (defn next-state
   [u y x]
   (let [state (get-in u [y x])
-        nb-n (reduce + (filter #(not= nil %) (nb u y x)))]
+        nb-n (reduce + (filter #(not= nil %) (neighbours-state u y x)))]
     (if (= 1 state)
       (cond (< nb-n 2) 0
             (<= 2 nb-n 3) 1
