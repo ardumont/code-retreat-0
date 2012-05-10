@@ -23,12 +23,14 @@
 
 (defn next-state
   [u y x]
-  (let [nb-n (reduce + (nb u y x))]
-    (cond (< nb-n 2) 0
-          (<= 2 nb-n 3) 1
-          :else 0)))
+  (let [state (get-in u [y x])
+        nb-n (reduce + (nb u y x))]
+    (if (= 1 state)
+      (cond (< nb-n 2) 0
+            (<= 2 nb-n 3) 1
+            :else 0)
+      (if (= 3 nb-n) 1 0))))
 
-;.;. It takes time to succeed because success is merely the natural reward of taking time to do anything well. -- Ross
 (fact "next time"
   (next-state [[0 1 0]
                [0 1 0]
@@ -38,4 +40,10 @@
                [0 0 0]] 1 1) => 1
   (next-state [[1 1 1]
                [0 1 0]
+               [1 0 0]] 1 1) => 0
+  (next-state [[0 1 1]
+               [0 0 0]
+               [1 0 0]] 1 1) => 1
+  (next-state [[0 0 1]
+               [0 0 0]
                [1 0 0]] 1 1) => 0)
