@@ -11,6 +11,7 @@
     [y+ x+]))
 
 (fact
+  (neighbours-coord 0 0) => [[-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1]]
   (neighbours-coord 1 1) => [[0 0] [0 1] [0 2] [1 0] [1 2] [2 0] [2 1] [2 2]])
 
 (defn nb "Compute the state of the neigbours of the cell with coord [y x]"
