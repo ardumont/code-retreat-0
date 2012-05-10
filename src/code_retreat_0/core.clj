@@ -24,7 +24,7 @@
 (defn next-state
   [u y x]
   (let [state (get-in u [y x])
-        nb-n (reduce + (nb u y x))]
+        nb-n (reduce + (filter #(not= nil %) (nb u y x)))]
     (if (= 1 state)
       (cond (< nb-n 2) 0
             (<= 2 nb-n 3) 1
@@ -47,3 +47,21 @@
   (next-state [[0 0 1]
                [0 0 0]
                [1 0 0]] 1 1) => 0)
+
+(defn gol
+  [u]
+  (reduce
+   (fn [r [y x :as c]]
+     (assoc-in r c (next-state u y x)))
+   u
+   (for [y (range (count u))
+         x (range (count u))] [y x])))
+
+(fact
+  (gol [[0 1 0 0]
+        [0 0 0 0]
+        [0 0 0 0]
+        [0 0 0 0]]) => [[0 0 0 0]
+                        [0 0 0 0]
+                        [0 0 0 0]
+                        [0 0 0 0]])
