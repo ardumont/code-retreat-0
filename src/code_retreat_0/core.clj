@@ -23,7 +23,7 @@
                      [0 0 0]
                      [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
 
-(defn next-state "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
+(defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
   (let [state (get-in u [y x])
         nb-n (count (filter #(= 1 %) (neighbours-state u y x)))]
@@ -33,28 +33,28 @@
             :else 0)
       (if (= 3 nb-n) 1 0))))
 
-(fact "next time"
-  (next-state [[0 1 0]
+(fact "next state"
+  (next-state-cell [[0 1 0]
                [0 1 0]
                [0 0 0]] 1 1) => 0
-  (next-state [[0 1 1]
+  (next-state-cell [[0 1 1]
                [0 1 0]
                [0 0 0]] 1 1) => 1
-  (next-state [[1 1 1]
+  (next-state-cell [[1 1 1]
                [0 1 0]
                [1 0 0]] 1 1) => 0
-  (next-state [[0 1 1]
+  (next-state-cell [[0 1 1]
                [0 0 0]
                [1 0 0]] 1 1) => 1
-  (next-state [[0 0 1]
+  (next-state-cell [[0 0 1]
                [0 0 0]
                [1 0 0]] 1 1) => 0)
 
-(defn gol
+(defn gol ""
   [u]
   (reduce
    (fn [r [y x :as c]]
-     (assoc-in r c (next-state u y x)))
+     (assoc-in r c (next-state-cell u y x)))
    u
    (for [y (range (count u))
          x (range (count u))] [y x])))
