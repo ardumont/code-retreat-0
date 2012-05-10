@@ -97,11 +97,11 @@
                                      y (range size)] (rand-int 2))))))
 
 (defn draw "Draw the game of life"
-  [gfx u]
+  [gfx w h u]
   (let [color {0 (java.awt.Color. 255 255 255)
                1 (java.awt.Color. 0 0 0)}
         offset 29]
-    (clear gfx 600 600)
+    (clear gfx w h)
     (doseq [x (range (count u))
             y (range (count u))]
       (.setColor gfx (color (get-in u [y x])))
@@ -112,8 +112,10 @@
 
 (defn game-of-life "Game of life"
   [n]
-  (let [gfx (get-gfx 600 600)]
+  (let [w 300
+        h 300
+        gfx (get-gfx w h)]
     (iterate (fn [u] (let [nxt-universe (next-state u)]
-                      (do (draw gfx nxt-universe)
-                          (Thread/sleep 300)
+                      (do (draw gfx w h nxt-universe)
+                          (Thread/sleep 200)
                           nxt-universe))) (random-universe n))))
