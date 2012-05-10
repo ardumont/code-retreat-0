@@ -86,10 +86,6 @@
      (.setSize width height)
      (.setVisible true))))
 
-(defn clear
-  [g width height]
-  (.clearRect g 0 0 width height))
-
 (defn random-universe "Random universe"
   [size]
   (vec (map vec (partition-all size
@@ -98,12 +94,19 @@
 
 (defn draw "Draw the game of life"
   [gfx w h u]
-  (let [color {0 (java.awt.Color. 255 255 255)
+  (let [blank-color (java.awt.Color. 255 255 255)
+        color {0 blank-color
                1 (java.awt.Color. 0 0 0)}
         offset 29]
-    (clear gfx w h)
     (doseq [x (range (count u))
             y (range (count u))]
+      ;; clear the painting
+      (.setColor gfx blank-color)
+      (.fillRect gfx
+                 (* 10 x)
+                 (+ offset (* 10 y))
+                 10 10)
+      ;; draw the new state
       (.setColor gfx (color (get-in u [y x])))
       (.fillRect gfx
                  (* 10 x)
