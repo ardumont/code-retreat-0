@@ -50,14 +50,23 @@
                [0 0 0]
                [1 0 0]] 1 1) => 0)
 
+(defn coordinates "Compute the coordinates of the matrix"
+  [u]
+  (let [set-rows (range (count u))]
+    (for [y set-rows
+          x set-rows] [y x])))
+
+(fact
+  (coordinates [[0 1]
+                [0 0]]) => [[0 0] [0 1] [1 0] [1 1]])
+
 (defn next-state "Given a universe, compute the next state of the universe"
   [u]
   (reduce
    (fn [r [y x :as c]]
      (assoc-in r c (next-state-cell u y x)))
    u
-   (for [y (range (count u))
-         x (range (count u))] [y x])))
+   (coordinates u)))
 
 (fact
   (next-state [[0 1 0 0]
