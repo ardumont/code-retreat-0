@@ -90,17 +90,30 @@
   [g width height]
   (.clearRect g 0 0 width height))
 
+(defn random-universe "Random universe"
+  [size]
+  (vec (map vec (partition-all size
+                               (for [x (range size)
+                                     y (range size)] (rand-int 2))))))
+
 (defn draw "Draw the game of life"
-  ([u]
-     (let [gfx (get-gfx 600 600)]
-       (draw gfx u)))
-  ([gfx u]
-     (let [color {0 (java.awt.Color. 255 255 255)
-                  1 (java.awt.Color. 0 0 0)}
-           offset 100]
-       (clear gfx 600 60)
-       (doseq [x (range (count u))
-               y (range (count u))]
-         (.setColor gfx (color (get-in u [y x])))
-         (.fillRect gfx (+ offset (* 10 x))
-                    (+ offset (* 10 y)) 10 10)))))
+  [gfx u]
+  (let [color {0 (java.awt.Color. 255 255 255)
+               1 (java.awt.Color. 0 0 0)}
+        offset 29]
+    (clear gfx 600 600)
+    (doseq [x (range (count u))
+            y (range (count u))]
+      (.setColor gfx (color (get-in u [y x])))
+      (.fillRect gfx
+                 (* 10 x)
+                 (+ offset (* 10 y))
+                 10 10))))
+
+(defn game-of-life "Game of life"
+  [n]
+  (let [gfx (get-gfx 600 600)]
+    (iterate (fn [u] (let [nxt-universe (next-state u)]
+                      (do (draw gfx nxt-universe)
+                          (Thread/sleep 300)
+                          nxt-universe))) (random-universe n))))
