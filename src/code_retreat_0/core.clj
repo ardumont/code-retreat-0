@@ -76,3 +76,31 @@
                                [0 0 0 0]
                                [0 0 0 0]
                                [0 0 0 0]])
+
+;; ------------------------ Side effects -------------------------
+
+(defn get-gfx "Given a width and a height, returns a frame with these dimension"
+  [width height]
+  (.getGraphics
+   (doto (java.awt.Frame.)
+     (.setSize width height)
+     (.setVisible true))))
+
+(defn clear
+  [g width height]
+  (.clearRect g 0 0 width height))
+
+(defn draw "Draw the game of life"
+  ([u]
+     (let [gfx (get-gfx 600 600)]
+       (draw gfx u)))
+  ([gfx u]
+     (let [color {0 (java.awt.Color. 255 255 255)
+                  1 (java.awt.Color. 0 0 0)}
+           offset 100]
+       (clear gfx 600 60)
+       (doseq [x (range (count u))
+               y (range (count u))]
+         (.setColor gfx (color (get-in u [y x])))
+         (.fillRect gfx (+ offset (* 10 x))
+                    (+ offset (* 10 y)) 10 10)))))
