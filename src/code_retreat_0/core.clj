@@ -23,10 +23,10 @@
                      [0 0 0]
                      [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
 
-(defn next-state
+(defn next-state "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
   (let [state (get-in u [y x])
-        nb-n (reduce + (filter #(not= nil %) (neighbours-state u y x)))]
+        nb-n (count (filter #(= 1 %) (neighbours-state u y x)))]
     (if (= 1 state)
       (cond (< nb-n 2) 0
             (<= 2 nb-n 3) 1
